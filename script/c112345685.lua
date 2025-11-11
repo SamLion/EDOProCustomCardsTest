@@ -109,6 +109,6 @@ function s.btlop(e,tp,eg,ep,ev,re,r,rp)
     local e2=Effect.CreateEffect(c)
     e2:SetType(EFFECT_TYPE_SINGLE)
     e2:SetCode(EFFECT_CANNOT_ATTACK)
-    e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
+    e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,2)
     bc:RegisterEffect(e2)
 end
