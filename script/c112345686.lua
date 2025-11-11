@@ -65,6 +65,36 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			e1:SetValue(function(e,c) return c==tc end)
 			c:RegisterEffect(e1)
+
+			-- 🔹 Efeito contínuo 1: o oponente não pode mudar posição de batalha
+			local e2=Effect.CreateEffect(c)
+			e2:SetType(EFFECT_TYPE_FIELD)
+			e2:SetCode(EFFECT_CANNOT_CHANGE_POSITION)
+			e2:SetRange(LOCATION_SZONE)
+			e2:SetTargetRange(0,LOCATION_MZONE)
+			e2:SetCondition(function(e) return e:GetHandler():IsFaceup() end)
+			c:RegisterEffect(e2)
+
+			-- 🔹 Efeito contínuo 2: monstros em posição de defesa do oponente não podem ativar efeitos
+			local e3=Effect.CreateEffect(c)
+			e3:SetType(EFFECT_TYPE_FIELD)
+			e3:SetCode(EFFECT_CANNOT_TRIGGER)
+			e3:SetRange(LOCATION_SZONE)
+			e3:SetTargetRange(0,LOCATION_MZONE)
+			e3:SetCondition(function(e) return e:GetHandler():IsFaceup() end)
+			e3:SetTarget(function(e,c) return c:IsDefensePos() end)
+			c:RegisterEffect(e3)
+
+			-- 🔹 Hint visual (opcional)
+			local e4=Effect.CreateEffect(c)
+			e4:SetType(EFFECT_TYPE_FIELD)
+			e4:SetCode(EFFECT_CLIENT_HINT)
+			e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+			e4:SetDescription(aux.Stringid(id,2))
+			e4:SetTargetRange(1,0)
+			e4:SetRange(LOCATION_SZONE)
+			e4:SetReset(RESET_EVENT+RESETS_STANDARD)
+			c:RegisterEffect(e4)
 		end
 	else
 		-- Se falhar, envia ao cemitério
