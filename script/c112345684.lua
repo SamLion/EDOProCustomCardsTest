@@ -77,7 +77,7 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetTarget(s.thtg)
 			e2:SetOperation(s.thop)
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-			c:RegisterEffect(e2)
+			c:RegisterEffect(e2,true)
 		end
 	else
 		-- Se falhar, envia ao cemitério
