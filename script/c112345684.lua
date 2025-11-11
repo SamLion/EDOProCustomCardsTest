@@ -86,8 +86,8 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	local ec=e:GetHandler():GetEquipTarget()
-	return ec and ec:IsFaceup()
+	local ec=e:GetOwner() -- quem concedeu o efeito (equip)
+	return ec and ec:IsLocation(LOCATION_SZONE) and ec:GetEquipTarget()==e:GetHandler()
 end
 function s.thfilter(c)
 	return c:IsSetCard(0x0f98) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
