@@ -77,7 +77,7 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetTarget(s.thtg)
 			e2:SetOperation(s.thop)
 			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
-			c:RegisterEffect(e2,true)
+			tc:RegisterEffect(e2)
 		end
 	else
 		-- Se falhar, envia ao cemitério
@@ -86,8 +86,9 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.thcon(e,tp,eg,ep,ev,re,r,rp)
-	local ec=e:GetOwner() -- quem concedeu o efeito (equip)
-	return ec and ec:IsLocation(LOCATION_SZONE) and ec:GetEquipTarget()==e:GetHandler()
+    local c=e:GetHandler()
+    local ec=c:GetEquipGroup():GetFirst()
+    return ec and ec:IsCode(id) 
 end
 function s.thfilter(c)
 	return c:IsSetCard(0x0f98) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
