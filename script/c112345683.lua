@@ -67,9 +67,37 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			e1:SetValue(function(e,c) return c==tc end)
 			c:RegisterEffect(e1)
+
+			local e2=Effect.CreateEffect(c)
+			e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+			e2:SetCode(EVENT_BATTLE_DESTROYING)
+			e2:SetRange(LOCATION_SZONE)
+			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+			e2:SetCondition(s.atkcon)
+			e2:SetOperation(s.atkop)
+			c:RegisterEffect(e2)
 		end
 	else
 		-- Se o monstro sair do campo, envia este ao cemitério junto
 		Duel.SendtoGrave(c,REASON_EFFECT)
+	end
+end
+
+function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
+	local eqc=e:GetHandler():GetEquipTarget()
+	local tc=eg:GetFirst()
+	return tc==eqc and tc:IsRelateToBattle()
+end
+
+function s.atkop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	local eqc=c:GetEquipTarget()
+	if eqc and eqc:IsFaceup() then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetValue(200)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE)
+		eqc:RegisterEffect(e1)
 	end
 end

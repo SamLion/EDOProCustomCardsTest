@@ -66,9 +66,41 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 			e1:SetValue(function(e,c) return c==tc end)
 			c:RegisterEffect(e1)
+
+			local e2=Effect.CreateEffect(c)
+			e2:SetDescription(aux.Stringid(id,2))
+			e2:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
+			e2:SetType(EFFECT_TYPE_IGNITION)
+			e2:SetRange(LOCATION_SZONE)
+			e2:SetCountLimit(1,{id,2})
+			e2:SetCondition(s.thcon)
+			e2:SetTarget(s.thtg)
+			e2:SetOperation(s.thop)
+			e2:SetReset(RESET_EVENT+RESETS_STANDARD)
+			c:RegisterEffect(e2)
 		end
 	else
 		-- Se falhar, envia ao cemitério
 		Duel.SendtoGrave(c,REASON_EFFECT)
+	end
+end
+
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+	local ec=e:GetHandler():GetEquipTarget()
+	return ec and ec:IsFaceup()
+end
+function s.thfilter(c)
+	return c:IsSetCard(0x0f98) and c:IsType(TYPE_SPELL+TYPE_TRAP) and c:IsAbleToHand()
+end
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
+end
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
 	end
 end
