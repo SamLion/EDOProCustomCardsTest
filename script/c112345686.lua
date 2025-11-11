@@ -85,16 +85,6 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 			e3:SetTarget(function(e,c) return c:IsDefensePos() end)
 			c:RegisterEffect(e3)
 
-			-- 🔹 Hint visual (opcional)
-			local e4=Effect.CreateEffect(c)
-			e4:SetType(EFFECT_TYPE_FIELD)
-			e4:SetCode(EFFECT_CLIENT_HINT)
-			e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-			e4:SetDescription(aux.Stringid(id,2))
-			e4:SetTargetRange(1,0)
-			e4:SetRange(LOCATION_SZONE)
-			e4:SetReset(RESET_EVENT+RESETS_STANDARD)
-			c:RegisterEffect(e4)
 		end
 	else
 		-- Se falhar, envia ao cemitério
