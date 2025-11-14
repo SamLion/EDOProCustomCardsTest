@@ -33,7 +33,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
         Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
     else
         e:SetCategory(CATEGORY_COUNTER+CATEGORY_SPECIAL_SUMMON)
-        Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x1)
+        Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x1999)
         Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK)
     end
 end
