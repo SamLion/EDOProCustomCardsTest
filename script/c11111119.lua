@@ -70,12 +70,25 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 		end,tp,LOCATION_EXTRA,0,nil)
 
 		if #extra>0 then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-			local sg=extra:SelectSubGroup(tp,function(g) return #g<=ct and g:CheckDifferentProperty("GetLevel") end,false)
-			if sg then
-				Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
-			end
-		end
+            Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+            local candidates = extra:Clone()
+            local sg = Group.CreateGroup()
+            for i=1,ct do
+                if candidates:GetCount()==0 then break end
+                Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+                local sel = candidates:Select(tp,1,1,nil)
+                local sc = sel:GetFirst()
+                if not sc then break end
+                sg:AddCard(sc)
+                -- remove do pool todos com o mesmo Level para evitar repetir níveis
+                local lvl = sc:GetLevel()
+                local torem = candidates:Filter(function(c) return c:GetLevel()==lvl end, nil)
+                candidates:Sub(torem)
+            end
+            if sg:GetCount()>0 then
+                Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
+            end
+        end
 
 	else
 		--Opção 2: devolver Besta-Guerreira -> trazer Guerreiro banido
